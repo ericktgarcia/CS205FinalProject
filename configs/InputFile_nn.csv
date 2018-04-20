@@ -1,5 +1,5 @@
-Model Command,java -jar C:/Users/zward/eclipse-workspace/CoSamperCPP/testModel.jar,,,
-Output File,C:/Users/zward/eclipse-workspace/CoSamperCPP/trace.csv,,,
+Model Command,python models/test.py,,,
+Output File,output/test.out,,,
 Method,SA,,,
 Iterations,100,,,
 Start temperature,10,,,
