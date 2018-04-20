@@ -18,6 +18,7 @@ int numParams;
 int numNodes;
 int maxIterations;
 
+
 //compare current loss score across nodes
 int minIndex;
 double localMinScore;
@@ -150,7 +151,6 @@ void updateSearch(string method, double* lossScores){
 
 
 int main(int argc, char** argv){
-
 	cout<<"***CoSampler***\n";
 
 	/* Initialize MPI and get rank and size */
@@ -173,8 +173,8 @@ int main(int argc, char** argv){
 			return(-1);
 		}
 		else{
-			string filepath="C:/Users/zward/Dropbox/PHD/Spring 2017-2018/CS 205/Project/InputFile.csv";
-			//string filepath=&argv[0]; //input filepath
+			//string filepath="C:/Users/zward/Dropbox/PHD/Spring 2017-2018/CS 205/Project/InputFile.csv";
+			string filepath=argv[1]; //input filepath
 			cout<<"Reading inputs: "<<filepath<<"\n";
 			ifstream inputFile;
 			inputFile.open(filepath);
