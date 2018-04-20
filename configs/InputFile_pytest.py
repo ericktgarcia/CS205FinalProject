@@ -1,4 +1,4 @@
-Model Command,python models/1Dconv.py,,,
+Model Command,python models/test.py,,,
 Output File,output/test.out,,,
 Method,SA,,,
 Iterations,100,,,
@@ -7,8 +7,8 @@ Cooling delta (exponential),0.995,,,
 Shrink bounds,T,,,
 Number of Parameters,5,,,
 Parameter Name,Lower Bound,Upper Bound,Enforce LB,Enforce UB
-Param1,10,30,T,T
-Param2,3,6,T,T
+Param1,0,3,T,F
+Param2,9,18,F,T
 Param3,4,6,F,F
 Param4,0.2,11,T,T
 Param5,-3,-1,F,F
