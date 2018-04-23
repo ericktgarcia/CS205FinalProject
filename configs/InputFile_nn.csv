@@ -5,10 +5,7 @@ Iterations,100,,,
 Start temperature,10,,,
 Cooling delta (exponential),0.995,,,
 Shrink bounds,T,,,
-Number of Parameters,5,,,
+Number of Parameters,2,,,
 Parameter Name,Lower Bound,Upper Bound,Enforce LB,Enforce UB
 Param1,10,30,T,T
 Param2,3,6,T,T
-Param3,4,6,F,F
-Param4,0.2,11,T,T
-Param5,-3,-1,F,F

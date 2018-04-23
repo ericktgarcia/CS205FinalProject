@@ -86,6 +86,7 @@ double runModel(){
 			fprintf (stderr, "Error with pclose.\n");
 		}
 		string strScore=stream.str();
+		//cout<<"Says: "<<strScore<<"\n";
 		score=atof(strScore.c_str());
 		cout<<"Score: "<<score<<"\n";
 	}

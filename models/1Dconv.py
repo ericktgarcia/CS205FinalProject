@@ -11,8 +11,8 @@ from torch.autograd import Variable
 num_epochs = 5
 channels = 2
 learning_rate = 0.05
-window_size = int(sys.argv[1])
-kernel_size = int(sys.argv[2])
+window_size = int(float(sys.argv[1]))
+kernel_size = int(float(sys.argv[2]))
 
 def gen_Xy(dim,scale=100,temp_dep=10):
     X = np.random.uniform(-scale,scale,size=(dim[0],dim[1]))
