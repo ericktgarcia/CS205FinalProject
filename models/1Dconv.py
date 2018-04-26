@@ -8,7 +8,7 @@ from torch.autograd import Variable
 
 
 ## Hyper Parameters
-num_epochs = 5
+num_epochs = 25
 channels = 2
 learning_rate = 0.05
 window_size = int(float(sys.argv[1]))
@@ -61,6 +61,7 @@ criterion = nn.MSELoss()
 optimizer = torch.optim.Adam(cnn.parameters(), lr=learning_rate)
 
 # Train the Model
+losses = []
 for epoch in range(num_epochs):
     X,y = gen_Xy([2000,channels],temp_dep=20)
     X,y = window(X,y,window_size=window_size)
@@ -75,8 +76,9 @@ for epoch in range(num_epochs):
     optimizer.zero_grad()
     outputs = cnn(traces)
     loss = criterion(outputs, result)
+    losses.append(loss.data[0])
     loss.backward()
     optimizer.step()
         
 #print ('Epoch [%d/%d], Loss: %.4f' %(epoch+1, num_epochs, loss.data[0]))
-print(loss.data[0])
+print(min(losses))

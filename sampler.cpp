@@ -213,9 +213,9 @@ int main(int argc, char** argv){
 					paramBounds[p][0]=atof(tokens[1].c_str());
 					paramBounds[p][1]=atof(tokens[2].c_str());
 					hardBounds[p][0]=false;
-					if(tokens[3].compare("T")==0){hardBounds[p][0]=true;}
+					if(tokens[3].compare("T")>=0){hardBounds[p][0]=true;}
 					hardBounds[p][1]=false;
-					if(tokens[4].compare("T")==0){hardBounds[p][1]=true;}
+					if(tokens[4].compare("T")>=0){hardBounds[p][1]=true;}
 				}
 				bestParams=new double[numParams];
 				curParams=new double[numParams];
