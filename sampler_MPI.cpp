@@ -154,27 +154,29 @@ int main(int argc, char** argv){
 	cout<<"Starting CoSampler Process "<<(rank+1)<<" of "<<size<<"\n";
 	
 	if(rank==0){ //master
-		//generator(time(0)); //seed RNG with current time
-		generator.seed(123); //seed RNG
+		generator.seed(time(0)); //seed RNG with current time
+		//generator.seed(123); //seed RNG
 
 		//Get input file
 		int numArgs=argc;
-		numArgs=1; //debug
-		if(numArgs!=1){
+		if(numArgs<1){
 			fprintf (stderr, "Missing input file.\n");
 			return(-1);
 		}
 		else{
 			string filepath=argv[1]; //input filepath
+			string curJob=argv[2]; //job index
+			cout<<"Job index: "<<curJob<<"\n";
 			cout<<"Reading inputs: "<<filepath<<"\n";
 			ifstream inputFile;
 			inputFile.open(filepath);
 			if(inputFile.is_open()){
 				string line;
 				getline(inputFile,line); //Model command
-				modelCmd=split(line)[1];
+				modelCmd=split(line)[1]+" "+curJob;
+				cout<<"Model command: "<<modelCmd<<"\n";
 				getline(inputFile,line); //Out filepath
-				outFilepath=split(line)[1];
+				outFilepath=split(line)[1]+"_"+curJob+".csv";
 				getline(inputFile,line); //Method
 				method=split(line)[1];
 				getline(inputFile,line); //Max iterations
@@ -225,20 +227,22 @@ int main(int argc, char** argv){
 	else{ //Worker, read in model command
 		//Get input file
 		int numArgs=argc;
-		numArgs=1; //debug
-		if(numArgs!=1){
+		if(numArgs<1){
 			fprintf (stderr, "Missing input file.\n");
 			return(-1);
 		}
 		else{
 			string filepath=argv[1]; //input filepath
+			string curJob=argv[2]; //job index
+			cout<<"Job index: "<<curJob<<"\n";
 			cout<<"Reading inputs: "<<filepath<<"\n";
 			ifstream inputFile;
 			inputFile.open(filepath);
 			if(inputFile.is_open()){
 				string line;
 				getline(inputFile,line); //Model command
-				modelCmd=split(line)[1];
+				modelCmd=split(line)[1]+" "+curJob;
+				cout<<"Model command: "<<modelCmd<<"\n";
 				inputFile.close();
 			}
 			else{
