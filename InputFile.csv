@@ -1,0 +1,18 @@
+Model Command,java -jar testModel.jar,,,
+Output File,trace_S3_N2,,,
+Method,SA,,,
+Iterations,1000,,,
+Start temperature,1,,,
+Cooling delta (exponential),0.995,,,
+Shrink bounds,T,,,
+Number of Parameters,9,,,
+Parameter Name,Lower Bound,Upper Bound,Enforce LB,Enforce UB
+Param1,0,1,T,T
+Param2,0,1,T,T
+Param3,0,1,T,T
+Param4,0,1,T,T
+Param5,0,1,T,T
+Param6,0,1,T,T
+Param7,0,1,T,T
+Param8,0,1,T,T
+Param9,0,1,T,T
