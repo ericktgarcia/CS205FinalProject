@@ -102,6 +102,7 @@ We then calculate the distance score:
 
 ## Results
 ![3 states](/images/S3.png)
+![10 states](/images/S10.png)
 
 ## Conclusions
 As models get more complex, time to converge is pushed out (i.e. more iterations)
