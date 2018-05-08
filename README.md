@@ -101,7 +101,7 @@ We then calculate the distance score:
 <a href="https://www.codecogs.com/eqnedit.php?latex=\hat{D}=\left&space;\|&space;S^*-\hat{S}&space;\right&space;\|_2" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\hat{D}=\left&space;\|&space;S^*-\hat{S}&space;\right&space;\|_2" title="\hat{D}=\left \| S^*-\hat{S} \right \|_2" /></a>
 
 ## Results
-link images here
+![3 states](/images/S3.png)
 
 ## Conclusions
 As models get more complex, time to converge is pushed out (i.e. more iterations)
