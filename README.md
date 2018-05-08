@@ -17,7 +17,15 @@ Now we can compile the model:
 
 `mpic++ sampler_MPI.cpp -o sampler -lm`
 
-Finally, test the result:
+Finally, test the result. The sampler takes two parameters: the config file (here, InputFile.csv) and a task number.
 
-`mpirun -np 2 sampler InputFile.csv 1234`
+`mpirun -np 2 sampler InputFile.csv 1`
 
+With the sampler compiled, you can exit your interactive session and launch further experiments with sbatch. `mpiScript.sh` contains a minimal example experiment and can be launched with:
+
+'sbatch mpiScript.sh'
+
+## Configuration File
+The sampler takes in a configuration file in the form of a .csv to specific the model, output file, optimization method, and other parameters to test.
+
+`InputFile.csv` contains the settings used for our results.
