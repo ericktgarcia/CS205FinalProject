@@ -42,17 +42,17 @@ Simulated annealing is a stochastic optimization technique that approximates the
 The algorithm works by proposing new states that are ‘near’ the current state.  If a new state is ‘better’ (i.e. lower loss score) than the current state, the proposed state will always be accepted.  If the new state has a higher loss score it will be accepted with some probability – this helps the search path to not get trapped in local minima.  Higher temperatures correspond to higher acceptance probabilities, allowing the algorithm to better search the global parameter space.  As the temperature cools the acceptance probabilities decrease, allowing the algorithm to fine tune the local search space.
 The algorithm is typically run sequentially:
 ### Sequential Algorithm
-`Let t = t0 #initial temperature
-Let s = s0 #initial state
-Let d = d0 #initial loss/distance score
-For i = 0 to imax:
-	Propose s*|s #propose nearby state
-	Calculate d* = D(s*) #calculate loss function
-	If d* < d: #always move
-		 s = s*, d = d*
-	Else If rand(0,1) < exp(-(d*-d)/t) #sometimes move
-		 s = s*, d = d*
-	t = ti #cool temperature`
+`Let t = t0 #initial temperature   
+Let s = s0 #initial state   
+Let d = d0 #initial loss/distance score   
+For i = 0 to imax:   
+	Propose s*|s #propose nearby state   
+	Calculate d* = D(s*) #calculate loss function   
+	If d* < d: #always move   
+		 s = s*, d = d*   
+	Else If rand(0,1) < exp(-(d*-d)/t) #sometimes move   
+		 s = s*, d = d*   
+	t = ti #cool temperature`   
 ### Coupled Simulated Annealing
 While simulated annealing is typically used in an embarrassingly parallel workflow (High Throughput Computing), the algorithm is amenable to a more tightly coupled parallelization.  We developed a parallel MPI implementation of the sampling algorithm, allowing it to be used to optimize models running on a distributed computing cluster.  Each worker node runs the model independently and then communicates the loss score back to the master, who decides on the next parameter set for each worker to evaluate.
 ### Parallel Algorithm
