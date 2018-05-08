@@ -1,7 +1,7 @@
 # CS205FinalProject
 
 ## Run the Sampler
-First, we must compile the model. The easiest way to do this is to get an interactive job. We request two nodes, so we can test the compiled model when we finish.
+First, we must compile the sampler. The easiest way to do this is to get an interactive job. We request two nodes, so we can test the compiled sampler when we finish.
 
 `srun --pty -p test -n 2 --mem 500M -t 0-06:00 /bin/bash`
 
@@ -13,11 +13,11 @@ For Orchestra:
 
 `module load gcc openmpi java`
 
-Now we can compile the model:
+Now we can compile the sampler:
 
 `mpic++ sampler_MPI.cpp -o sampler -lm`
 
-Finally, test the result. The sampler takes two parameters: the config file (here, InputFile.csv) and a task number.
+Finally, let's test the result. The sampler takes two parameters: the config file, which specifies the model and optimization technique, and a task number.
 
 `mpirun -np 2 sampler InputFile.csv 1`
 
