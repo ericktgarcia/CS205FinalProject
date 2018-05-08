@@ -85,6 +85,7 @@ To evaluate the speed-up of the parallel algorithm we optimized a set of random 
 For each size N we generated 1,000 random target state distributions and optimized the parameters via coupled simulated annealing with k=1, 2, 4, 8 chains
 We calculated the average score by iteration
 We also calculated speed-up by ‘terminating’ each recorded chain once a score below a specified threshold was reached
+
 ### Random Markov Chain
 We defined Markov Chains of different sizes N=3, 10, 32  (i.e. # parameters =9, 100, 1024), and ran each chain with 100,000 individuals.  A random Markov chain is defined by a random (square) transition matrix.
 ![Markov Chain](/images/markov.png)
@@ -95,7 +96,8 @@ For each chain we randomly generated a target state distribution at cycle 50:
 With current parameter set (i.e. transition matrix T), run 100,000 individuals through the Markov chain to estimate:
 <a href="https://www.codecogs.com/eqnedit.php?latex=\hat{S}=[\hat{s}_0^{50},\hat{s}_1^{50},...,\hat{s}_{N-1}^{50}]" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\hat{S}=[\hat{s}_0^{50},\hat{s}_1^{50},...,\hat{s}_{N-1}^{50}]" title="\hat{S}=[\hat{s}_0^{50},\hat{s}_1^{50},...,\hat{s}_{N-1}^{50}]" /></a>
 
-Calculate distance score:
+We then calculate the distance score:
+
 <a href="https://www.codecogs.com/eqnedit.php?latex=\hat{D}=\left&space;\|&space;S^*-\hat{S}&space;\right&space;\|_2" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\hat{D}=\left&space;\|&space;S^*-\hat{S}&space;\right&space;\|_2" title="\hat{D}=\left \| S^*-\hat{S} \right \|_2" /></a>
 
 ## Results
