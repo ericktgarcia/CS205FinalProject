@@ -2,7 +2,7 @@
 We developed a coupled simulated annealing implementation that runs stochastic optimizations in parallel using MPI.  We describe here how to use the sampler and explore some of its properties and potential efficiency gains on a series of increasingly complex random Markov Chain microsimulations.
 
 ## Run the Sampler
-First, we must compile the sampler. The easiest way to do this is to get an interactive job. We request two nodes, so we can test the compiled sampler when we finish.
+After cloning the repo on Odyssey or Orchestra, we must compile the sampler. The easiest way to do this is to get an interactive job. We request two nodes, so we can test the compiled sampler when we finish.
 `srun --pty -p test -n 2 --mem 500M -t 0-06:00 /bin/bash`
 
 From here, load the necessary modules. 
