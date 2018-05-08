@@ -1,7 +1,7 @@
 # CS205FinalProject
 
 ## Run the Sampler
-First, we must compile the model. The easiest way to do this is to get an interactive job. We request two nodes to test the compiled model.
+First, we must compile the model. The easiest way to do this is to get an interactive job. We request two nodes, so we can test the compiled model when we finish.
 
 `srun --pty -p test -n 2 --mem 500M -t 0-06:00 /bin/bash`
 
