@@ -23,7 +23,7 @@ Finally, let's test the result. The sampler takes two parameters: the config fil
 
 With the sampler compiled, you can exit your interactive session and launch further experiments with sbatch. `mpiScript.sh` contains a minimal example experiment and can be launched with:
 
-'sbatch mpiScript.sh'
+`sbatch mpiScript.sh`
 
 ## Configuration File
 The sampler takes in a configuration file in the form of a .csv to specific the model, output file, optimization method, and other parameters to test.
