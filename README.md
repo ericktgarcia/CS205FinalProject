@@ -1,5 +1,5 @@
 # Coupled Simulated Annealing
-We developed a coupled simulated annealing implementation that runs stochastic optimizations in parallel using MPI.  We describe here how to use the sampler and explore some of its properties and potentially efficiency gains on a series of increasingly complex random Markov Chain microsimulations.
+We developed a coupled simulated annealing implementation that runs stochastic optimizations in parallel using MPI.  We describe here how to use the sampler and explore some of its properties and potential efficiency gains on a series of increasingly complex random Markov Chain microsimulations.
 
 ## Run the Sampler
 First, we must compile the sampler. The easiest way to do this is to get an interactive job. We request two nodes, so we can test the compiled sampler when we finish.
@@ -86,8 +86,8 @@ For each size N we generated 1,000 random target state distributions and optimiz
 We calculated the average score by iteration
 We also calculated speed-up by ‘terminating’ each recorded chain once a score below a specified threshold was reached
 ### Random Markov Chain
-We defined Markov Chains of different sizes N=3, 10, 32  (i.e. # parameters =9, 100, 1024), and ran each chain with 100,000 individuals.  A random Markov chain is defined by random (square) transition matrix.
-[image] [transition matrix]
+We defined Markov Chains of different sizes N=3, 10, 32  (i.e. # parameters =9, 100, 1024), and ran each chain with 100,000 individuals.  A random Markov chain is defined by a random (square) transition matrix.
+![Markov Chain](/images/markov.png)
 For each chain we randomly generated a target state distribution at cycle 50:
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=S^*&space;=&space;[s_0^*^{50},&space;s_1^*^{50},&space;...&space;,s_{N-1}^*^{50}]&space;s.t.&space;\sum_{i=0}^{N-1}&space;s_i^*=1" target="_blank"><img src="https://latex.codecogs.com/gif.latex?S^*&space;=&space;[s_0^*^{50},&space;s_1^*^{50},&space;...&space;,s_{N-1}^*^{50}]&space;s.t.&space;\sum_{i=0}^{N-1}&space;s_i^*=1" title="S^* = [s_0^*^{50}, s_1^*^{50}, ... ,s_{N-1}^*^{50}] s.t. \sum_{i=0}^{N-1} s_i^*=1" /></a>
@@ -96,7 +96,7 @@ With current parameter set (i.e. transition matrix T), run 100,000 individuals t
 <a href="https://www.codecogs.com/eqnedit.php?latex=\hat{S}=[\hat{s}_0^{50},\hat{s}_1^{50},...,\hat{s}_{N-1}^{50}]" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\hat{S}=[\hat{s}_0^{50},\hat{s}_1^{50},...,\hat{s}_{N-1}^{50}]" title="\hat{S}=[\hat{s}_0^{50},\hat{s}_1^{50},...,\hat{s}_{N-1}^{50}]" /></a>
 
 Calculate distance score:
-D ̂=‖S^*-S ̂ ‖_2
+<a href="https://www.codecogs.com/eqnedit.php?latex=\hat{D}=\left&space;\|&space;S^*-\hat{S}&space;\right&space;\|_2" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\hat{D}=\left&space;\|&space;S^*-\hat{S}&space;\right&space;\|_2" title="\hat{D}=\left \| S^*-\hat{S} \right \|_2" /></a>
 
 ## Results
 link images here
