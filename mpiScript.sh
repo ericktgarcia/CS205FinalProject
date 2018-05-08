@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH -o /home/zjw2/sampler/mpiOut/%A_%a.out
-#SBATCH -e /home/zjw2/sampler/mpiOut/%A_%a.err
-#SBATCH -p short
-#SBATCH -n 8
+#SBATCH -o $HOME/%A_%a.out
+#SBATCH -e $HOME/%A_%a.err
+#SBATCH -p test 
+#SBATCH -n 2
 #SBATCH --mem-per-cpu=4500M
-#SBATCH -t 720
-#SBATCH --array=1-1000
+#SBATCH -t 480
+#SBATCH --array=1-5
 
-module load gcc openmpi java
-mpirun -np 8 sampler InputFile.csv "${SLURM_ARRAY_TASK_ID}"
+module load gcc/6.3.0-fasrc01 openmpi/2.1.0-fasrc01 java/1.8.0_45-fasrc01
+mpirun -np 2 sampler InputFile.csv "${SLURM_ARRAY_TASK_ID}"
