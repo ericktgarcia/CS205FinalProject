@@ -85,7 +85,9 @@ We also calculated speed-up by ‘terminating’ each recorded chain once a scor
 We defined Markov Chains of different sizes N=3, 10, 32  (i.e. # parameters =9, 100, 1024), and ran each chain with 100,000 individuals.  A random Markov chain is defined by random (square) transition matrix.
 [image] [transition matrix]
 For each chain we randomly generated a target state distribution at cycle 50:
-S^*=[■(〖s_0^*〗^50&〖s_1^*〗^50&…&〖s_(N-1)^*〗^50 )]
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=\bf{S}^*&space;=&space;[s_0^*^{50},&space;s_1^*^{50},&space;...&space;,s_{N-1}^*^{50}]" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\bf{S}^*&space;=&space;[s_0^*^{50},&space;s_1^*^{50},&space;...&space;,s_{N-1}^*^{50}]" title="\bf{S}^* = [s_0^*^{50}, s_1^*^{50}, ... ,s_{N-1}^*^{50}]" /></a>
+
 s.t. ∑_i^(N-1)▒s_i^* =1 
 With current parameter set (i.e. transition matrix T ̂), run 100,000 individuals through the Markov chain to estimate:
 S ̂=[■((s_0 ) ̂^50&(s_1 ) ̂^50&…&〖s ̂_(N-1)〗^50 )]
