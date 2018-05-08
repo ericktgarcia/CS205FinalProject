@@ -89,7 +89,8 @@ For each chain we randomly generated a target state distribution at cycle 50:
 <a href="https://www.codecogs.com/eqnedit.php?latex=S^*&space;=&space;[s_0^*^{50},&space;s_1^*^{50},&space;...&space;,s_{N-1}^*^{50}]&space;s.t.&space;\sum_{i=0}^{N-1}&space;s_i^*=1" target="_blank"><img src="https://latex.codecogs.com/gif.latex?S^*&space;=&space;[s_0^*^{50},&space;s_1^*^{50},&space;...&space;,s_{N-1}^*^{50}]&space;s.t.&space;\sum_{i=0}^{N-1}&space;s_i^*=1" title="S^* = [s_0^*^{50}, s_1^*^{50}, ... ,s_{N-1}^*^{50}] s.t. \sum_{i=0}^{N-1} s_i^*=1" /></a>
 
 With current parameter set (i.e. transition matrix T), run 100,000 individuals through the Markov chain to estimate:
-S ̂=[■((s_0 ) ̂^50&(s_1 ) ̂^50&…&〖s ̂_(N-1)〗^50 )]
+<a href="https://www.codecogs.com/eqnedit.php?latex=\hat{S}=[\hat{s}_0^{50},\hat{s}_1^{50},...,\hat{s}_{N-1}^{50}]" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\hat{S}=[\hat{s}_0^{50},\hat{s}_1^{50},...,\hat{s}_{N-1}^{50}]" title="\hat{S}=[\hat{s}_0^{50},\hat{s}_1^{50},...,\hat{s}_{N-1}^{50}]" /></a>
+
 Calculate distance score:
 D ̂=‖S^*-S ̂ ‖_2
 
