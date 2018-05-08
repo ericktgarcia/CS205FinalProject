@@ -1,0 +1,8 @@
+#get interactive job
+srun --pty -p test -n 2 --mem 500M -t 0-06:00 /bin/bash
+#compile
+module load gcc openmpi java
+#modules used: gcc/4.8.2-fasrc01; openmpi/1.8.3-fasrc02; java/1.8.0_45-fasrc01
+mpic++ sampler_MPI.cpp -o sampler -lm -lstdc++ -std=c++11
+#test run
+mpirun -np 2 sampler InputFile.csv ¡°testrun¡±
