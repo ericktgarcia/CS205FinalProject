@@ -1,4 +1,4 @@
-Model Command,java -jar models/testModel.jar,,,
+Model Command,java -jar testModel.jar,,,
 Output File,output/trace.csv,,,
 Method,SA,,,
 Iterations,100,,,
