@@ -1,5 +1,5 @@
 Model Command,java -jar testModel.jar,,,
-Output File,output/trace.csv,,,
+Output File,trace.csv,,,
 Method,SA,,,
 Iterations,100,,,
 Start temperature,10,,,
