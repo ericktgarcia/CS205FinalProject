@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <iostream>
 #include <string>
-//#include <mpi.h>
-//#include <omp.h>
 #include <sstream>
 #include <fstream>
 #include <vector>
@@ -17,7 +15,6 @@ string outFilepath;
 int numParams;
 int numNodes;
 int maxIterations;
-
 
 //compare current loss score across nodes
 int minIndex;
@@ -71,7 +68,7 @@ double runModel(){
 		oss<<" "<<curParams[p];
 	}
 	string command=oss.str();
-	cout<<"Running model: "<<command<<" ";
+	//run model
 	output = popen(command.c_str(), "r");
 	if (!output){
 		fprintf (stderr, "Error with popen.\n");
@@ -86,9 +83,7 @@ double runModel(){
 			fprintf (stderr, "Error with pclose.\n");
 		}
 		string strScore=stream.str();
-		//cout<<"Says: "<<strScore<<"\n";
 		score=atof(strScore.c_str());
-		cout<<"Score: "<<score<<"\n";
 	}
 	return(score);
 }
@@ -142,49 +137,40 @@ void updateSearch(string method, double* lossScores){
 			}
 		}
 	}
-	else if(method.compare("GD")==0){
-		//calculate overall gradient and take step
-	}
-	else if(method.compare("SGD")==0){
-		//calculate average gradient and take step
-	}
 }
 
 
 int main(int argc, char** argv){
-	cout<<"***CoSampler***\n";
-
 	/* Initialize MPI and get rank and size */
 	int rank=0, size=1;
-	numNodes=size;
 
-	//MPI_Init(&argc, &argv);
-	//MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-	//MPI_Comm_size(MPI_COMM_WORLD, &size);
+	numNodes=size;
+	cout<<"Starting CoSampler Process "<<(rank+1)<<" of "<<size<<"\n";
 
 	if(rank==0){ //master
-		//generator(time(0)); //seed RNG with current time
-		generator.seed(123); //seed RNG
-
+		generator.seed(time(0)); //seed RNG with current time
+		//generator.seed(123); //seed RNG
 		//Get input file
 		int numArgs=argc;
-		numArgs=1; //debug
-		if(numArgs!=1){
+
+		if(numArgs<1){
 			fprintf (stderr, "Missing input file.\n");
 			return(-1);
 		}
 		else{
-			//string filepath="C:/Users/zward/Dropbox/PHD/Spring 2017-2018/CS 205/Project/InputFile.csv";
 			string filepath=argv[1]; //input filepath
+			string curJob=argv[2]; //job index
+			cout<<"Job index: "<<curJob<<"\n";
 			cout<<"Reading inputs: "<<filepath<<"\n";
 			ifstream inputFile;
 			inputFile.open(filepath);
 			if(inputFile.is_open()){
 				string line;
 				getline(inputFile,line); //Model command
-				modelCmd=split(line)[1];
+				modelCmd=split(line)[1]+" "+curJob;
+				cout<<"Model command: "<<modelCmd<<"\n";
 				getline(inputFile,line); //Out filepath
-				outFilepath=split(line)[1];
+				outFilepath=split(line)[1]+"_"+curJob+".csv";
 				getline(inputFile,line); //Method
 				method=split(line)[1];
 				getline(inputFile,line); //Max iterations
@@ -232,6 +218,33 @@ int main(int argc, char** argv){
 			}
 		}
 	}
+	else{ //Worker, read in model command
+		//Get input file
+		int numArgs=argc;
+		if(numArgs<1){
+			fprintf (stderr, "Missing input file.\n");
+			return(-1);
+		}
+		else{
+			string filepath=argv[1]; //input filepath
+			string curJob=argv[2]; //job index
+			cout<<"Job index: "<<curJob<<"\n";
+			cout<<"Reading inputs: "<<filepath<<"\n";
+			ifstream inputFile;
+			inputFile.open(filepath);
+			if(inputFile.is_open()){
+				string line;
+				getline(inputFile,line); //Model command
+				modelCmd=split(line)[1]+" "+curJob;
+				cout<<"Model command: "<<modelCmd<<"\n";
+				inputFile.close();
+			}
+			else{
+				cout<<"Unable to open inputs file";
+				return(-1);
+			}
+		}
+	}
 
 	//Perform search
 	if(rank==0){ //master
@@ -245,24 +258,25 @@ int main(int argc, char** argv){
 		}
 		trace<<"\n";
 
-		bool stop=false;
+		int stop=0;
 		int iteration=0;
-		while(stop==false){//check termination condition
+		while(stop==0){//check termination condition
 			if(method.compare("GD")==0 || method.compare("SGD")==0){
 				//split up data for programs to process in parallel
 			}
 			sampleParams();
 
-			//MPI_Send(nodeParams[node]); //send directions
+			cout<<"Running iteration: "<<iteration;
+
 			//do some work too
 			for(int p=0; p<numParams; p++){curParams[p]=nodeParams[0][p];}
 			double* loss=new double[numNodes];
 			loss[0]=runModel();
 
-			//MPI_Receive(loss); //get loss scores back
 			updateSearch(method,loss); //determine next search space
 
 			//update trace
+			cout<<" Local Score: "<<localMinScore<<" from Process "<<minIndex<<"\n";
 			trace<<iteration<<","<<curTemp<<","<<localMinScore<<","<<minIndex;
 			for(int p=0; p<numParams; p++){
 				trace<<","<<curParams[p];
@@ -271,22 +285,19 @@ int main(int argc, char** argv){
 
 			curTemp*=tempDelta; //cool temperature
 			iteration++;
-			if(iteration>maxIterations){stop=true;}
+			if(iteration>maxIterations){stop=1;}
 		}
+		cout<<"DONE!\n";
 		trace.close();
 	}
 	else{ //worker
-		bool stop=false;
-		while(stop==false){ //check termination condition
-			//MPI_Receive(curParams);//get parameters
+		curParams=new double[numParams]; //initialize array
+		int stop=0;
+		while(stop==0){ //check termination condition
 			//do work
 			double loss=runModel();
-			//MPI_Send(loss); //send loss score
-			//MPI_Receive(stop)
 		}
 	}
-
-	//MPI_Finalize();
 
 	/* Clean everything up */
 	if(rank==0){ //master
