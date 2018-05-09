@@ -101,12 +101,22 @@ We then calculate the distance score:
 <a href="https://www.codecogs.com/eqnedit.php?latex=\hat{D}=\left&space;\|&space;S^*-\hat{S}&space;\right&space;\|_2" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\hat{D}=\left&space;\|&space;S^*-\hat{S}&space;\right&space;\|_2" title="\hat{D}=\left \| S^*-\hat{S} \right \|_2" /></a>
 
 ## Results
+Here we plot the mean and minimum scores by search iteration for each size of Markov Chain and coupling size *k*.  We also plot the expected speed-up (i.e. number of iterations to reach a certain score) at different score thresholds.
+
 ![3 states](/images/S3.png)
 ![10 states](/images/S10.png)
 ![32 states](/images/S32.png)
 
+We see above that due to the exponential cooling schedule we used in simulated annealing we could achieve super-linear speed-up by coupling chains together!  That is, the expected number of iterations to achieve a score below a certain threshold decreased by a factor larger than the increase in additional chains (i.e. MPI processes) used.
+
+We also see that potential speed-up is greater for 'simple' models (e.g. 9 parameters) and 'complex' models (e.g. 1024 parameters), with smaller (but still substantial and potentially super-linear) speed-up for 'medium' models (e.g. 100 parameters).  
+
+For simple models coupled SA offers a speed-up in finding good scores near the beginning of the search, but since it is not too difficult for the sequential (k=1) algorithm to approximate the global optimum in this low-dimensional space the results from the coupled and sequential algorithms quickly converge.  Thus the adantage of coupling diminishes at lower thresholds for simple models.
+
+For medium models coupled SA still offers substantial speed-up, but is less likely to be super-linear.  Again we see faster speed-up for higher scores (i.e. near the beginning of the search), but the parameter space can still be optimized efficiently by a single chain, so the sequential and parallel results converge about half-way through the search.  Coupled SA still offers expected speed-up, but it diminishes as the score threshold decreases.
+
+For complex models we see that coupled SA offers large speed-up again, as this highly-dimensional parameter space is more difficult for a single chain to explore.  More importantly, we see that with increasing *k* we are able to achieve scores not possible with smaller coupling (or sequential) implementations - the scores do not converge.  Thus for complex models coupled SA provides an efficient approach to optimizing the parameter space that is not feasible with independent (sequential) SA chains.  We see that the minimum score achieved across all sequential trials never goes below 3, while using *k*=8 we can approach 0.  Thus the speed-up for scores below 3 cannot be calculated (i.e. is infinite) since the sequential algorithm cannot achieve these thresholds.
+
+
 ## Conclusions
-As models get more complex, time to converge is pushed out (i.e. more iterations)
-Peak speed-up is at higher thresholds for more complex models
-Super-linear speed-up is possible for some combinations of threshold/model complexity
-For complex models, coupled SA offers the possibility of achieving loss scores not possible with sequential SA
+We find that coupled simulated annealing offers large potential efficiency gains over sequential SA, with super-linear speed-up possible for various combinations of score threshold and model complexity.  Moreover, we coupled SA offers the possibility of achieving loss scores not possible with sequential SA.
