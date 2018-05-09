@@ -28,17 +28,23 @@ cp sampler InputFile.csv testModel.jar mpiScript-odyssey.sh ../example
 cd ../example
 sbatch mpiScript.sh
 ```
-You will need to adjust the output and error options in `mpiScript-odyssey.sh` to accomodate your directory location.
+NOTE: You will need to adjust the output and error options in `mpiScript-odyssey.sh` to accomodate the absolute path to your experiment folder.
 
 ## Configuration File
-The sampler takes in a configuration file in the form of a .csv to specify the model, output file, optimization method, and other parameters to test.
+The sampler takes in a configuration file in the form of a .csv to specify the model, output file location, optimization method, temperature, and parameter ranges with optional bounding.
 
 `InputFile.csv` contains the settings used for our results.
 
-### Compute Platforms
+## Compute Platforms
 We tested the implementation on O2 (https://wiki.rc.hms.harvard.edu/display/O2) and Odyssey (https://www.rc.fas.harvard.edu/odyssey/), both of which use a SLURM scheduler.
+
 Odyssey is Harvard's largest cluster with over 78,000 cores and 2,000+ nodes.
+
 O2 is a cluster computer at Harvard Medical School that currently includes 268 computing nodes for a total of 8064 cores and ~68TB of memory.
+
+The majority of our results were obtained using the `short` partition on O2, which has a 20 core and 250GB / job memory limit. The software was also verified to work on Odyssey, using the `test` partition.
+
+Both Odyssey and O2 are running Red Hat linux, 4.4.7.
 
 ## Simulated Annealing
 Simulated annealing is a stochastic optimization technique that approximates the global optimum by trying to minimize the energy of a system via a ‘cooling schedule’.  [https://en.wikipedia.org/wiki/Simulated_annealing]
