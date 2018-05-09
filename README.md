@@ -31,15 +31,14 @@ sbatch mpiScript.sh
 You will need to adjust the output and error options in `mpiScript-odyssey.sh` to accomodate your directory location.
 
 ## Configuration File
-The sampler takes in a configuration file in the form of a .csv to specific the model, output file, optimization method, and other parameters to test.
+The sampler takes in a configuration file in the form of a .csv to specify the model, output file, optimization method, and other parameters to test.
 
 `InputFile.csv` contains the settings used for our results.
 
 ### Compute Platforms
-We tested the implementation on O2 (https://wiki.rc.hms.harvard.edu/display/O2) and Odyssey (https://www.rc.fas.harvard.edu/odyssey/).  Information on how to run on these SLURM environments are provided here…
-
-O2 is a cluster computer at Harvard Medical School that currently includes 268 computing nodes for a total of 8064 cores and ~68TB of memory.  It uses a SLURM scheduler.
-
+We tested the implementation on O2 (https://wiki.rc.hms.harvard.edu/display/O2) and Odyssey (https://www.rc.fas.harvard.edu/odyssey/), both of which use a SLURM scheduler.
+Odyssey is Harvard's largest cluster with over 78,000 cores and 2,000+ nodes.
+O2 is a cluster computer at Harvard Medical School that currently includes 268 computing nodes for a total of 8064 cores and ~68TB of memory.
 
 ## Simulated Annealing
 Simulated annealing is a stochastic optimization technique that approximates the global optimum by trying to minimize the energy of a system via a ‘cooling schedule’.  [https://en.wikipedia.org/wiki/Simulated_annealing]
@@ -60,7 +59,7 @@ For i = 0 to i_max:
 	t = t_i #cool temperature
 ```
 ### Coupled Simulated Annealing
-While simulated annealing is typically used in an embarrassingly parallel workflow (High Throughput Computing), the algorithm is amenable to a more tightly coupled parallelization.  We developed a parallel MPI implementation of the sampling algorithm, allowing it to be used to optimize models running on a distributed computing cluster.  Each worker node runs the model independently and then communicates the loss score back to the master, who decides on the next parameter set for each worker to evaluate.
+While simulated annealing is typically used in an embarrassingly parallel workflow (High Throughput Computing), the algorithm is amenable to a more tightly coupled parallelization.  We developed a parallel MPI implementation of the algorithm, allowing it to be used to optimize models running on a cluster (i.e. distributed memory).  Each worker node runs the model independently and then communicates the loss score back to the master, which decides on the next parameter set for each worker to evaluate.
 ### Parallel Algorithm
 ```
 Let t = t_0 #initial temperature
@@ -81,27 +80,28 @@ For i = 0 to i_max:
 	t = t_i #cool temperature`
 ```
 ## Benchmarking
-To evaluate the speed-up of the parallel algorithm we optimized a set of random Markov Chain microsimulation models. We defined Markov Chains of different sizes N=3, 10, 32  (i.e. # parameters = 9, 100, 1024), and ran each chain with 100,000 individuals.  We used an increasing number of Markov states to benchmark the parallel performance with respect to increasing model complexity.  As the state space grows the number of parameters grows O2, yielding a highly dimensional parameter space to optimize over.
-For each size N we generated 1,000 random target state distributions and optimized the parameters via coupled simulated annealing with k=1, 2, 4, 8 chains
-We calculated the average score by iteration
-We also calculated speed-up by ‘terminating’ each recorded chain once a score below a specified threshold was reached
+To evaluate the speed-up of the parallel algorithm we optimized a set of random Markov Chain microsimulation models written in Java. We defined Markov Chains of different sizes *N*=3, 10, 32  (i.e. # parameters = 9, 100, 1024), and ran each chain with 100,000 individuals.  We used Java multi-threading (2 cores) to run the individuals in parallel within each model for faster performance.
+
+We used an increasing number of Markov states to benchmark the parallel performance with respect to increasing model complexity.  As the state space grows the number of parameters grows O^2, yielding a highly dimensional parameter space to optimize.
+For each size *N* we generated 1,000 random target state distributions (i.e. 1,000 trials) and optimized the parameters via coupled simulated annealing with *k*=1, 2, 4, 8 chains, where *k*=1 corresponds to the sequential algorithm.
+We calculated the average and minimum score across all runs for each search iteration. We also estimated the expected speed-up by ‘terminating’ each recorded chain once a score below a specified threshold was reached.
 
 ### Random Markov Chain
-We defined Markov Chains of different sizes N=3, 10, 32  (i.e. # parameters =9, 100, 1024), and ran each chain with 100,000 individuals.  A random Markov chain is defined by a random (square) transition matrix.
+A random Markov chain is defined by a random (square) transition matrix.
 ![Markov Chain](/images/markov.png)
 For each chain we randomly generated a target state distribution at cycle 50:
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=S^*&space;=&space;[s_0^*^{50},&space;s_1^*^{50},&space;...&space;,s_{N-1}^*^{50}]&space;s.t.&space;\sum_{i=0}^{N-1}&space;s_i^*=1" target="_blank"><img src="https://latex.codecogs.com/gif.latex?S^*&space;=&space;[s_0^*^{50},&space;s_1^*^{50},&space;...&space;,s_{N-1}^*^{50}]&space;s.t.&space;\sum_{i=0}^{N-1}&space;s_i^*=1" title="S^* = [s_0^*^{50}, s_1^*^{50}, ... ,s_{N-1}^*^{50}] s.t. \sum_{i=0}^{N-1} s_i^*=1" /></a>
 
-With current parameter set (i.e. transition matrix T), run 100,000 individuals through the Markov chain to estimate:
+With the current parameter set (i.e. transition matrix T), we ran 100,000 individuals through the Markov chain to estimate:
 <a href="https://www.codecogs.com/eqnedit.php?latex=\hat{S}=[\hat{s}_0^{50},\hat{s}_1^{50},...,\hat{s}_{N-1}^{50}]" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\hat{S}=[\hat{s}_0^{50},\hat{s}_1^{50},...,\hat{s}_{N-1}^{50}]" title="\hat{S}=[\hat{s}_0^{50},\hat{s}_1^{50},...,\hat{s}_{N-1}^{50}]" /></a>
 
-We then calculate the distance score:
+We then calculated the distance (loss) score:
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=\hat{D}=\left&space;\|&space;S^*-\hat{S}&space;\right&space;\|_2" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\hat{D}=\left&space;\|&space;S^*-\hat{S}&space;\right&space;\|_2" title="\hat{D}=\left \| S^*-\hat{S} \right \|_2" /></a>
 
 ## Results
-Here we plot the mean and minimum scores by search iteration for each size of Markov Chain and coupling size *k*.  We also plot the expected speed-up (i.e. number of iterations to reach a certain score) at different score thresholds.
+Here we plot the mean and minimum scores by search iteration (across the 1,000 trials) for each size *N* of Markov Chain and coupling size *k*.  We also plot the expected speed-up (i.e. number of iterations to reach a certain score) at different score thresholds.
 
 ![3 states](/images/S3.png)
 ![10 states](/images/S10.png)
@@ -111,7 +111,7 @@ We see above that due to the exponential cooling schedule we used in simulated a
 
 We also see that potential speed-up is greater for 'simple' models (e.g. 9 parameters) and 'complex' models (e.g. 1024 parameters), with smaller (but still substantial and potentially super-linear) speed-up for 'medium' models (e.g. 100 parameters).  
 
-For simple models coupled SA offers a speed-up in finding good scores near the beginning of the search, but since it is not too difficult for the sequential (k=1) algorithm to approximate the global optimum in this low-dimensional space the results from the coupled and sequential algorithms quickly converge.  Thus the adantage of coupling diminishes at lower thresholds for simple models.
+For simple models coupled SA offers a speed-up in finding good scores near the beginning of the search, but since it is not too difficult for the sequential (*k*=1) algorithm to approximate the global optimum in this low-dimensional space the results from the coupled and sequential algorithms quickly converge.  Thus the adantage of coupling diminishes at lower thresholds for simple models.
 
 For medium models coupled SA still offers substantial speed-up, but is less likely to be super-linear.  Again we see faster speed-up for higher scores (i.e. near the beginning of the search), but the parameter space can still be optimized efficiently by a single chain, so the sequential and parallel results converge about half-way through the search.  Coupled SA still offers expected speed-up, but it diminishes as the score threshold decreases.
 
@@ -119,4 +119,4 @@ For complex models we see that coupled SA offers large speed-up again, as this h
 
 
 ## Conclusions
-We find that coupled simulated annealing offers large potential efficiency gains over sequential SA, with super-linear speed-up possible for various combinations of score threshold and model complexity.  Moreover, we coupled SA offers the possibility of achieving loss scores not possible with sequential SA.
+We find that coupled simulated annealing offers large potential efficiency gains over sequential SA, with super-linear speed-up possible for various combinations of score threshold and model complexity.  Moreover, we find that coupled SA offers the possibility of achieving loss scores not possible with sequential SA.
