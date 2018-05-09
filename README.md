@@ -82,7 +82,7 @@ For i = 0 to i_max:
 ## Benchmarking
 To evaluate the speed-up of the parallel algorithm we optimized a set of random Markov Chain microsimulation models written in Java. We defined Markov Chains of different sizes *N*=3, 10, 32  (i.e. # parameters = 9, 100, 1024), and ran each chain with 100,000 individuals.  We used Java multi-threading (2 cores) to run the individuals in parallel within each model for faster performance.
 
-We used an increasing number of Markov states to benchmark the parallel performance with respect to increasing model complexity.  As the state space grows the number of parameters grows O^2, yielding a highly dimensional parameter space to optimize.
+We used an increasing number of Markov states to benchmark the parallel performance with respect to increasing model complexity.  As the state space grows the number of parameters grows O(n<sup>2</sup>), yielding a highly dimensional parameter space to optimize.
 For each size *N* we generated 1,000 random target state distributions (i.e. 1,000 trials) and optimized the parameters via coupled simulated annealing with *k*=1, 2, 4, 8 chains, where *k*=1 corresponds to the sequential algorithm.
 We calculated the average and minimum score across all runs for each search iteration. We also estimated the expected speed-up by ‘terminating’ each recorded chain once a score below a specified threshold was reached.
 
