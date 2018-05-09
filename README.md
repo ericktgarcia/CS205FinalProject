@@ -120,3 +120,5 @@ For complex models we see that coupled SA offers large speed-up again, as this h
 
 ## Conclusions
 We find that coupled simulated annealing offers large potential efficiency gains over sequential SA, with super-linear speed-up possible for various combinations of score threshold and model complexity.  Moreover, we find that coupled SA offers the possibility of achieving loss scores not possible with sequential SA.
+
+![Min Scores](/images/mins.png)
