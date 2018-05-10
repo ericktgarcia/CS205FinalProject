@@ -87,6 +87,9 @@ For i = 0 to i_max:
 		 s = s*, d = d*
 	t = t_i #cool temperature`
 ```
+## Advanced Features
+While we did not get around to trying the sampler with anything besides random Markov Chain models, our sampler is designed in a modular fashion to easily accomodate the optimization of different models. Using the config file, you can specify a different model run in an arbitrary language to be optimized with coupled simulated annealing.
+
 ## Benchmarking
 To evaluate the speed-up of the parallel algorithm we optimized a set of random Markov Chain microsimulation models written in Java. We defined Markov Chains of different sizes *N*=3, 10, 32  (i.e. # parameters = 9, 100, 1024), and ran each chain with 100,000 individuals.  We used Java multi-threading (2 cores) to run the individuals in parallel within each model for faster performance.
 
