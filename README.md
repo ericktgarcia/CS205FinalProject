@@ -1,4 +1,6 @@
 # Coupled Simulated Annealing
+Many times when you run a model, you have a ballpark estimate of what the parameters should be but do not know them exactly. The main method used for this parameter search is to do a grid search over every combination of parameters to find the optimal solution. Ordinarily, the problem already falls into HPC/Big Data category but when coupled with this grid search, the model has to run for a significantly long time. Most of the time, this is the way people run their models. However, there is research being done on improving this search with better software and utilizing multiple cores. Because of this, we have decided to tackle this embarrassingly parallel workflow into a more reasonable one.
+ 
 We developed a coupled simulated annealing implementation that runs stochastic optimizations in parallel using MPI.  We describe here how to use the sampler and explore some of its properties and potential efficiency gains on a series of increasingly complex random Markov Chain microsimulations.
 
 ## Run the Sampler
