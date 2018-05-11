@@ -2,6 +2,7 @@
 #SBATCH -o /home/zjw2/sampler/mpiOut/%A_%a.out
 #SBATCH -e /home/zjw2/sampler/mpiOut/%A_%a.err
 #SBATCH -p short
+#SBATCH -c 2
 #SBATCH -n 8
 #SBATCH --mem-per-cpu=4500M
 #SBATCH -t 720
