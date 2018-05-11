@@ -2,6 +2,7 @@
 #SBATCH -o $HOME/%A_%a.out
 #SBATCH -e $HOME/%A_%a.err
 #SBATCH -p test 
+#SBATCH -c 2
 #SBATCH -n 2
 #SBATCH --mem-per-cpu=4500M
 #SBATCH -t 480
